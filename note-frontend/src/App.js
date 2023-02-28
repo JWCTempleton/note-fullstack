@@ -36,9 +36,15 @@ function App({ notes }) {
     const note = allNotes.find((note) => note.id === id);
     const changedNote = { ...note, important: !note.important };
 
-    noteService.update(id, changedNote).then((response) => {
-      setAllNotes(allNotes.map((note) => (note.id !== id ? note : response)));
-    });
+    noteService
+      .update(id, changedNote)
+      .then((response) => {
+        setAllNotes(allNotes.map((note) => (note.id !== id ? note : response)));
+      })
+      .catch((error) => {
+        alert(`the note '${note.content}' was already deleted from server`);
+        setAllNotes(allNotes.filter((n) => n.id !== id));
+      });
   };
 
   const notesToShow = showAll
