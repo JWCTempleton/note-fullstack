@@ -17,8 +17,18 @@
     },
     {
       "content": "Adding notes is easy",
-      "important": false,
+      "important": true,
       "id": 4
+    },
+    {
+      "content": "This is still working",
+      "important": true,
+      "id": 5
+    },
+    {
+      "content": "Working with data",
+      "important": false,
+      "id": 6
     }
   ]
 }
