@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let notes = [
   {
     id: 1,
@@ -31,6 +33,12 @@ app.get("/api/notes/:id", (request, response) => {
   } else {
     response.status(404).end();
   }
+});
+
+app.post("/api/notes", (request, response) => {
+  const note = request.body;
+  console.log(note);
+  response.json(note);
 });
 
 app.delete("/api/notes/:id", (request, response) => {
