@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpXQ1RlbXBsZXRvbiIsImlkIjoiNjQwZDNiNzAyNzUyM2NiODQ3MDdkNDRmIiwiaWF0IjoxNjc4NzUyODY3fQ.7o_zmXD5AS-kn-u8DCn8BtlBEMZwOz8_sz-DlGWHTz0
+
+{
+    "content":"Authorization is working",
+    "important":true
+}
