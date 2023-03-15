@@ -69,6 +69,11 @@ function App({ notes }) {
     setNewNote(event.target.value);
   };
 
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.removeItem("loggedNoteappUser");
+  };
+
   const toggleImportanceOf = (id) => {
     const note = allNotes.find((note) => note.id === id);
     const changedNote = { ...note, important: !note.important };
@@ -131,6 +136,7 @@ function App({ notes }) {
       {user && (
         <div>
           <p>{user.name} logged in</p>
+          <button onClick={handleLogout}>Logout</button>
           {noteForm()}
         </div>
       )}{" "}
