@@ -41,6 +41,7 @@ function App({ notes }) {
         username,
         password,
       });
+      noteService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
