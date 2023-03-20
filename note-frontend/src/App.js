@@ -6,6 +6,8 @@ import loginService from "./services/login";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Footer from "./components/Footer";
+import Toggleable from "./components/Toggleable";
+import NoteForm from "./components/NoteForm";
 
 function App({ notes }) {
   const [allNotes, setAllNotes] = useState([]);
@@ -94,13 +96,6 @@ function App({ notes }) {
       });
   };
 
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
-  );
-
   const notesToShow = showAll
     ? allNotes
     : allNotes.filter((note) => note.important === true);
@@ -122,7 +117,13 @@ function App({ notes }) {
         <div>
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
-          {noteForm()}
+          <Toggleable buttonLabel="new note">
+            <NoteForm
+              onSubmit={addNote}
+              value={newNote}
+              handleChange={handleNoteChange}
+            />
+          </Toggleable>{" "}
         </div>
       )}{" "}
       <h2>Notes</h2>
