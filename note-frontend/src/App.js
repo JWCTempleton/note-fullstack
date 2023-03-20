@@ -11,7 +11,6 @@ import NoteForm from "./components/NoteForm";
 
 function App({ notes }) {
   const [allNotes, setAllNotes] = useState([]);
-  const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
@@ -32,19 +31,6 @@ function App({ notes }) {
       noteService.setToken(user.token);
     }
   }, []);
-
-  const addNote = (event) => {
-    event.preventDefault();
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5,
-    };
-
-    noteService.create(noteObject).then((response) => {
-      setAllNotes(allNotes.concat(response));
-      setNewNote("");
-    });
-  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -68,10 +54,11 @@ function App({ notes }) {
     }
   };
 
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value);
+  const addNote = (noteObject) => {
+    noteService.create(noteObject).then((returnedNote) => {
+      setAllNotes(allNotes.concat(returnedNote));
+    });
   };
-
   const handleLogout = () => {
     setUser(null);
     window.localStorage.removeItem("loggedNoteappUser");
@@ -118,11 +105,7 @@ function App({ notes }) {
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
           <Toggleable buttonLabel="new note">
-            <NoteForm
-              onSubmit={addNote}
-              value={newNote}
-              handleChange={handleNoteChange}
-            />
+            <NoteForm createNote={addNote} />{" "}
           </Toggleable>{" "}
         </div>
       )}{" "}
