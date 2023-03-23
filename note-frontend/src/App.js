@@ -71,7 +71,6 @@ function App({ notes }) {
     noteService
       .update(id, changedNote)
       .then((response) => {
-        console.log("response", response);
         setAllNotes(allNotes.map((note) => (note.id !== id ? note : response)));
       })
       .catch((error) => {
