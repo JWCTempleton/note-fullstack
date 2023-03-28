@@ -8,8 +8,18 @@ import LoginForm from "./components/LoginForm";
 import Footer from "./components/Footer";
 import Toggleable from "./components/Toggleable";
 import NoteForm from "./components/NoteForm";
+import Home from "./components/Home";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 
-function App({ notes }) {
+function App() {
   const [allNotes, setAllNotes] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -32,27 +42,27 @@ function App({ notes }) {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
+  // const handleLogin = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     const user = await loginService.login({
+  //       username,
+  //       password,
+  //     });
 
-      window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
+  //     window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
 
-      noteService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      setErrorMessage("Wrong credentials");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
-    }
-  };
+  //     noteService.setToken(user.token);
+  //     setUser(user);
+  //     setUsername("");
+  //     setPassword("");
+  //   } catch (exception) {
+  //     setErrorMessage("Wrong credentials");
+  //     setTimeout(() => {
+  //       setErrorMessage(null);
+  //     }, 5000);
+  //   }
+  // };
 
   const addNote = (noteObject) => {
     noteService.create(noteObject).then((returnedNote) => {
@@ -87,43 +97,150 @@ function App({ notes }) {
     ? allNotes
     : allNotes.filter((note) => note.important === true);
 
-  return (
+  // return (
+  //   <div>
+  //     <h1>Notes</h1>
+  //     <Notification message={errorMessage} />
+  //     {!user && (
+  //       <LoginForm
+  //         handleLogin={handleLogin}
+  //         setUsername={setUsername}
+  //         setPassword={setPassword}
+  //         username={username}
+  //         password={password}
+  //       />
+  //     )}
+  //     {user && (
+  //       <div>
+  //         <p>{user.name} logged in</p>
+  //         <button onClick={handleLogout}>Logout</button>
+  //         <Toggleable buttonLabel="new note">
+  //           <NoteForm createNote={addNote} />{" "}
+  //         </Toggleable>{" "}
+  //       </div>
+  //     )}{" "}
+  //     <h2>Notes</h2>
+  //     <div>
+  //       <button onClick={() => setShowAll(!showAll)}>
+  //         show {showAll ? "important" : "all"}
+  //       </button>
+  //     </div>
+  //     <ul>
+  //       {notesToShow.map((note) => (
+  //         <Note
+  //           key={note.id}
+  //           note={note}
+  //           toggleImportance={() => toggleImportanceOf(note.id)}
+  //         />
+  //       ))}
+  //     </ul>
+  //     <Footer />
+  //   </div>
+  // );
+  const Notes = ({ notesToShow, toggleImportanceOf }) => (
     <div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage} />
-      {!user && (
-        <LoginForm
-          handleLogin={handleLogin}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          username={username}
-          password={password}
-        />
-      )}
-      {user && (
-        <div>
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>Logout</button>
-          <Toggleable buttonLabel="new note">
-            <NoteForm createNote={addNote} />{" "}
-          </Toggleable>{" "}
-        </div>
-      )}{" "}
       <h2>Notes</h2>
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? "important" : "all"}
-        </button>
-      </div>
       <ul>
         {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
+          <li key={note.id}>
+            <Link to={`/notes/${note.id}`}>{note.content}</Link>
+          </li>
         ))}
       </ul>
+    </div>
+  );
+
+  // const Login = (props) => {
+  //   const navigate = useNavigate();
+
+  //   // const onSubmit = (event) => {
+  //   //   event.preventDefault()
+  //   //   props.onLogin('mluukkai')
+  //   //   navigate('/')
+  //   // }
+
+  //   return (
+  //     <div>
+  //       <h2>login</h2>
+  //       <form onSubmit={handleLogin}>
+  //         <div>
+  //           username: <input />
+  //         </div>
+  //         <div>
+  //           password: <input type="password" />
+  //         </div>
+  //         <button type="submit">login</button>
+  //       </form>
+  //     </div>
+  //   );
+  // };
+  const padding = {
+    padding: 5,
+  };
+  return (
+    <div>
+      <Router>
+        <div>
+          <Link style={padding} to="/">
+            home
+          </Link>
+          <Link style={padding} to="/notes">
+            notes
+          </Link>
+          <Link style={padding} to="/users">
+            users
+          </Link>
+          {user ? (
+            <div>
+              <p>{user.username} logged in</p>{" "}
+              <button onClick={handleLogout}>Logout</button>
+            </div>
+          ) : (
+            <Link style={padding} to="/login">
+              login
+            </Link>
+          )}
+        </div>
+
+        <Routes>
+          <Route
+            path="/notes/:id"
+            element={
+              <Note
+                allNotes={allNotes}
+                toggleImportanceOf={toggleImportanceOf}
+              />
+            }
+          />
+          <Route
+            path="/notes"
+            element={
+              <Notes
+                notesToShow={notesToShow}
+                toggleImportanceOf={toggleImportanceOf}
+              />
+            }
+          />
+          {/* <Route
+            path="/users"
+            element={user ? <Users /> : <Navigate replace to="/login" />}
+          /> */}
+          <Route
+            path="/login"
+            element={
+              <LoginForm
+                setUsername={setUsername}
+                setPassword={setPassword}
+                username={username}
+                password={password}
+                user={user}
+                setUser={setUser}
+              />
+            }
+          />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
       <Footer />
     </div>
   );

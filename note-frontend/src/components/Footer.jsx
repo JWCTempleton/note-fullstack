@@ -5,6 +5,9 @@ const Footer = () => {
     fontStyle: "italic",
     fontSize: 16,
     marginTop: "20px",
+    display: "flex",
+    alignItems: "center",
+    padding: "20px 30px",
   };
   return (
     <div style={footerStyle}>
