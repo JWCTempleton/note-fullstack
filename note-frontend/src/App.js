@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import Note from "./components/Note";
 import noteService from "./services/notes";
-import loginService from "./services/login";
+// import loginService from "./services/login";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Footer from "./components/Footer";
@@ -140,10 +140,18 @@ function App() {
   const Notes = ({ notesToShow, toggleImportanceOf }) => (
     <div>
       <h2>Notes</h2>
+      {user && (
+        <Toggleable buttonLabel="new note">
+          <NoteForm createNote={addNote} />{" "}
+        </Toggleable>
+      )}
       <ul>
         {notesToShow.map((note) => (
           <li key={note.id}>
-            <Link to={`/notes/${note.id}`}>{note.content}</Link>
+            <Link to={`/notes/${note.id}`}>{note.content}</Link>{" "}
+            <button onClick={() => toggleImportanceOf(note.id)}>
+              {note.important ? "Make not important" : "Make important"}
+            </button>
           </li>
         ))}
       </ul>
