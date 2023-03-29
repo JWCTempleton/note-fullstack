@@ -151,9 +151,11 @@ function App() {
         {notesToShow.map((note) => (
           <li key={note.id}>
             <Link to={`/notes/${note.id}`}>{note.content}</Link>{" "}
-            <button onClick={() => toggleImportanceOf(note.id)}>
-              {note.important ? "Make not important" : "Make important"}
-            </button>
+            {user && (
+              <button onClick={() => toggleImportanceOf(note.id)}>
+                {note.important ? "Make not important" : "Make important"}
+              </button>
+            )}
           </li>
         ))}
       </ul>
