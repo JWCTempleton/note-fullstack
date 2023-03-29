@@ -258,7 +258,19 @@ function App() {
             }
           />
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<LoginPage />} />
+          <Route
+            path="/signup"
+            element={
+              <LoginPage
+                setUsername={setUsername}
+                setPassword={setPassword}
+                username={username}
+                password={password}
+                user={user}
+                setUser={setUser}
+              />
+            }
+          />
         </Routes>
       </Router>
       <Footer />
