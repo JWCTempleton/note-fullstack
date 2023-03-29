@@ -9,6 +9,8 @@ import Footer from "./components/Footer";
 import Toggleable from "./components/Toggleable";
 import NoteForm from "./components/NoteForm";
 import Home from "./components/Home";
+import User from "./components/User";
+import LoginPage from "./components/LoginPage";
 import {
   BrowserRouter as Router,
   Routes,
@@ -195,9 +197,11 @@ function App() {
           <Link style={padding} to="/notes">
             notes
           </Link>
-          <Link style={padding} to="/users">
-            users
-          </Link>
+          {user && (
+            <Link style={padding} to="/user">
+              user
+            </Link>
+          )}
           {user ? (
             <div>
               <p>{user.username} logged in</p>{" "}
@@ -206,6 +210,11 @@ function App() {
           ) : (
             <Link style={padding} to="/login">
               login
+            </Link>
+          )}
+          {!user && (
+            <Link style={padding} to="/signup">
+              sign up
             </Link>
           )}
         </div>
@@ -229,10 +238,12 @@ function App() {
               />
             }
           />
-          {/* <Route
-            path="/users"
-            element={user ? <Users /> : <Navigate replace to="/login" />}
-          /> */}
+          <Route
+            path="/user"
+            element={
+              user ? <User user={user} /> : <Navigate replace to="/login" />
+            }
+          />
           <Route
             path="/login"
             element={
@@ -247,6 +258,7 @@ function App() {
             }
           />
           <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<LoginPage />} />
         </Routes>
       </Router>
       <Footer />

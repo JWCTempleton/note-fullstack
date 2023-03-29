@@ -1,6 +1,6 @@
 const Home = () => (
   <div>
-    <h2>TKTL notes app</h2>
+    <h2>JWCT notes app</h2>
     <p>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the

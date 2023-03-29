@@ -9,6 +9,9 @@ const Note = ({ allNotes, toggleImportanceOf }) => {
   return (
     <li className="note">
       {note.content} {note.important ? <b>Important</b> : <b>Unimportant</b>}
+      <p>
+        Note created by <b>{note.user.username}</b>
+      </p>
     </li>
   );
 };
